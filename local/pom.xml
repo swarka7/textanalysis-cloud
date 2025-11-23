@@ -31,12 +31,32 @@
             <artifactId>ec2</artifactId>
         </dependency>
 
-        <!-- Stanford NLP for sentiment & classification -->
-        <dependency>
-            <groupId>edu.stanford.nlp</groupId>
-            <artifactId>stanford-corenlp</artifactId>
-            <version>4.2.0</version>
-        </dependency>
+        <!-- Stanford CoreNLP -->
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>4.5.4</version>
+</dependency>
+
+<!-- Stanford CoreNLP models (ENGLISH) -->
+<dependency>
+    <groupId>edu.stanford.nlp</groupId>
+    <artifactId>stanford-corenlp</artifactId>
+    <version>4.5.4</version>
+    <classifier>models</classifier>
+</dependency>
     </dependencies>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.2.0</version>
+            <configuration>
+                <mainClass>local.LocalAnalyzer</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 
 </project>
