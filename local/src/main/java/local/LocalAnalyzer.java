@@ -1,40 +1,49 @@
 package local;
 
 import edu.stanford.nlp.pipeline.*;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 public class LocalAnalyzer {
 
-    private static StanfordCoreNLP pipeline;
+    private static final StanfordCoreNLP pipeline;
 
-    // Initialize NLP pipeline once
     static {
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse,sentiment");
+        props.setProperty("annotators", "tokenize,ssplit,pos,parse");
         pipeline = new StanfordCoreNLP(props);
     }
 
-    public static String analyzeText(String text) {
-        CoreDocument document = new CoreDocument(text);
-        pipeline.annotate(document);
+    public static void main(String[] args) throws Exception {
 
-        StringBuilder sb = new StringBuilder();
+        // Choose analysis type manually for now
+        String analysisType = "DEPENDENCY"; // POS | CONSTITUENCY | DEPENDENCY
 
-        for (CoreSentence sentence : document.sentences()) {
-            String sent = sentence.text();
-            String sentiment = sentence.sentiment();
+        String text = Files.readString(Path.of("local/src/main/resources/sample.txt"));
 
-            sb.append("Sentence: ").append(sent).append("\n");
-            sb.append("Sentiment: ").append(sentiment).append("\n\n");
+
+        System.out.println("Input:\n" + text + "\n");
+
+        CoreDocument doc = new CoreDocument(text);
+        pipeline.annotate(doc);
+
+        switch (analysisType) {
+            case "POS":
+                doc.tokens().forEach(t ->
+                        System.out.println(t.word() + "\t" + t.tag()));
+                break;
+
+            case "CONSTITUENCY":
+                doc.sentences().forEach(s ->
+                        System.out.println(s.constituencyParse()));
+                break;
+
+            case "DEPENDENCY":
+                doc.sentences().forEach(s ->
+                        System.out.println(s.dependencyParse()));
+                break;
         }
-
-        return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        String text = "Stanford CoreNLP is a great tool for natural language processing. "
-                + "I love using it for text analysis. "
-                + "However, sometimes it can be a bit slow.";
-        System.out.println(analyzeText(text));
     }
 }
