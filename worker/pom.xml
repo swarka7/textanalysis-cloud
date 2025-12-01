@@ -22,7 +22,12 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
         </dependency>
-
+         <dependency>
+        <groupId>edu.stanford.nlp</groupId>
+        <artifactId>stanford-corenlp</artifactId>
+        <version>4.2.0</version>
+        <classifier>models</classifier>
+    </dependency>
         <!-- Stanford NLP for classification -->
         <dependency>
             <groupId>edu.stanford.nlp</groupId>
@@ -30,5 +35,32 @@
             <version>4.2.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Build an executable (shaded) jar with Main-Class set -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>worker.WorkerMain</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
