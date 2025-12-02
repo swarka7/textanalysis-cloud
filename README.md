@@ -1,8 +1,7 @@
 # TextAnalysisInTheCloud
 
 ## Authors
-- Swarka Bader — ID: *213402241*
-- (Add any teammates if applicable)
+- Swarka Bader — 
 
 ## Overview
 Distributed text analysis with three components:
