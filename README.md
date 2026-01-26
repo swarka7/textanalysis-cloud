@@ -1,4 +1,3 @@
-cat << 'EOF' > README.md
 # TextAnalysisInTheCloud ☁️📄
 **Distributed Text Analysis Pipeline on AWS**
 
